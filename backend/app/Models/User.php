@@ -31,7 +31,8 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'password' => 'hashed',
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed', // laravel otomatis meng-hash teks apapun yg masuk ke propert pw
         ];
     }
 
