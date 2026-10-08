@@ -36,7 +36,7 @@ class AlatSeeder extends Seeder
             ],
             [
                 'kategori_id' => 4,
-                'nama_alat' => 'Tang Camping RJ45/RJ11 Proskit',
+                'nama_alat' => 'Tang Crimping RJ45/RJ11 Proskit',
                 'stok' => 20,
                 'status_kondisi' => 'Baik',
                 'deskripsi' => 'Alat potong dan pasang konektor kabel UTP.',

@@ -12,13 +12,15 @@
     @endif
 
     <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
-        <div class="p-5 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-            <h3 class="text-lg font-bold text-gray-800">Daftar Pengguna Sistem</h3>
-            <div class="flex items-center gap-3 w-full md:w-auto">
-                <!-- from search -->
-                 <from action="{{ route('admin.user.index') }}" method="GET" class="flex w-full md:w-80">
+        <!-- Header Card: Dibuat Flexbox Responsif -->
+        <div class="p-5 border-b border-gray-200 bg-gray-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <h3 class="text-lg font-bold text-gray-800 whitespace-nowrap">Daftar Pengguna Sistem</h3>
+            
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <!-- Form Search (Sudah Diperbaiki Typo Tag Form) -->
+                <form action="{{ route('admin.user.index') }}" method="GET" class="flex w-full sm:w-auto">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, email, role..."
-                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="w-full sm:w-64 px-3 py-2 text-sm border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 text-sm font-semibold rounded-r-lg transition">
                         Cari
                     </button>
@@ -28,14 +30,17 @@
                             Reset
                         </a>
                     @endif
-                </from>
-            <!-- tombol tambah user -->
-            <a href="{{ route('admin.user.create') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-                + Tambah User
-            </a>
+                </form>
+
+                <!-- Tombol Tambah User -->
+                <a href="{{ route('admin.user.create') }}"
+                   class="w-full sm:w-auto text-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition whitespace-nowrap">
+                    + Tambah User
+                </a>
+            </div>
         </div>
 
+        <!-- Tabel Responsif -->
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -44,7 +49,7 @@
                         <th class="py-3 px-4 border-b">Email</th>
                         <th class="py-3 px-4 border-b">Role / Hak Akses</th>
                         <th class="py-3 px-4 border-b">No. HP</th>
-                        <th class="py-3 px-4 border-b">Aksi</th>
+                        <th class="py-3 px-4 border-b text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-700 text-sm">
@@ -61,8 +66,8 @@
                                 </span>
                             </td>
                             <td class="py-3 px-4 border-b">{{ $user->no_hp ?? '-' }}</td>
-                            <td class="py-3 px-4 border-b">
-                                <div class="flex items-center space-x-2">
+                            <td class="py-3 px-4 border-b text-center">
+                                <div class="flex items-center justify-center space-x-2">
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('admin.user.edit', $user->id) }}"
                                        class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded text-xs font-semibold transition">
@@ -85,8 +90,6 @@
                             <td colspan="5" class="py-4 text-center text-gray-500">Belum ada data pengguna.</td>
                         </tr>
                     @endforelse
-                    
-  
                 </tbody>
             </table>
         </div>

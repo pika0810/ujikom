@@ -7,7 +7,7 @@ use App\Http\Controllers\WEB\PetugasController;
 use App\Http\Controllers\WEB\PeminjamController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 //admin

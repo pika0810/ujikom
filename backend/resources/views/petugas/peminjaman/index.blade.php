@@ -16,7 +16,7 @@
     @endif
 
     <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
-        <div class="p-5 border-b border-gray-200 bg-gray-50">
+        <div class="p-5 border-b border-gray-200 bg-gray-50 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <h3 class="text-lg font-bold text-gray-800">Menunggu Verifikasi Persetujuan</h3>
             <form action="{{ route('petugas.peminjaman.index') }}" method="GET" class="flex w-full md:w-80">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama peminjam..."
@@ -54,7 +54,8 @@
                             <td class="py-3 px-4 border-b">{{ $item->tgl_kembali_plan }}</td>
                             <td class="py-3 px-4 border-b">
                                 <ul class="list-disc list-inside space-y-1 text-xs">
-                                    @foreach($item->detailPinjam as $detail)
+                                    {{-- PERBAIKAN DI SINI: detailPinjam diubah ke detailPinjams ?? [] --}}
+                                    @foreach($item->detailPinjams ?? [] as $detail)
                                         <li>
                                             <span class="font-semibold">{{ $detail->alat->nama_alat ?? 'Alat Dihapus' }}</span>
                                             (Jumlah: {{ $detail->jumlah }})

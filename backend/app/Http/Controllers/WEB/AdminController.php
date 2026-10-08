@@ -20,7 +20,7 @@ class AdminController extends Controller
     // Menampilkan Dashboard Admin & Log Aktivitas
     public function index()
     {
-        $logs = LogAktivitas::with('user')->latest()->get();
+        $logs = LogAktivitas::with('user')->latest()->take(10)->get();
         return view('admin.dashboard', compact('logs'));
     }
 

@@ -14,7 +14,7 @@
     <!--SIDEBAR-->
     <aside class="w-64 bg-gray-900 text-white flex flex-col hidden md:flex">
         <div class="p-5 text-xl font-bold tracking-wider border-b border-gray-800">
-            PANEL ADMIN
+            PANEL {{ strtoupper(auth()->user()->role) }}
         </div>
         <nav class="flex-1 p-4 space-y-2">
         <!-- Menu khusus admin -->
