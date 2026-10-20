@@ -147,8 +147,9 @@ class PetugasController extends Controller
             // 3. Catat di tabel pengembalian
             Pengembalian::create([
                 'peminjaman_id' => $peminjaman->id,
+                'petugas_id' => auth()->id(),
                 'tgl_kembali' => now(),
-                'status_kondisi' => $request->input('kondisi_kembali', $request->input('status_kondisi', 'Baik')),
+                'kondisi_kembali' => $request->input('kondisi_kembali', 'Baik'),
                 'denda' => $request->input('denda', 0),
             ]);
 

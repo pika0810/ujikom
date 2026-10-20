@@ -96,15 +96,33 @@
             </form>
         </div>
 
+        <!-- NOTIFIKASI ERROR JIKA VALIDASI GAGAL -->
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- FORM & TABLE CONTENT -->
         <div class="card-custom">
             <form action="{{ route('peminjam.peminjaman.ajukan') }}" method="POST">
                 @csrf
                 
-                <!-- Input Rencana Tanggal Kembali -->
+                <!-- Input Rencana Tanggal Kembali (Disesuaikan jadi tgl_kembali_pinjam) -->
                 <div class="mb-4">
-                    <label for="tgl_kembali" class="form-label fw-semibold text-secondary">Rencana Tanggal Kembali</label>
-                    <input type="date" id="tgl_kembali" name="tgl_kembali" class="form-control" style="max-width: 400px;" required>
+                    <label for="tgl_kembali_pinjam" class="form-label fw-semibold text-secondary">Rencana Tanggal Kembali</label>
+                    <input type="date" id="tgl_kembali_pinjam" name="tgl_kembali_pinjam" class="form-control" style="max-width: 400px;" required>
                 </div>
 
                 <!-- Tabel Data Alat -->
@@ -125,35 +143,35 @@
                                 <td>Router Mikrotik RB941-2nD</td>
                                 <td>Jaringan & Konektivitas</td>
                                 <td>15</td>
-                                <td><input type="number" name="jumlah[1]" value="1" min="1" max="15" class="form-control form-control-sm"></td>
+                                <td><input type="number" name="jumlah[]" value="1" min="1" max="15" class="form-control form-control-sm"></td>
                             </tr>
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="alat_id[]" value="2" class="form-check-input"></td>
                                 <td>Kamera DSLR Canon EOS 3000D</td>
                                 <td>Multimedia & Audio Visual</td>
                                 <td>5</td>
-                                <td><input type="number" name="jumlah[2]" value="1" min="1" max="5" class="form-control form-control-sm"></td>
+                                <td><input type="number" name="jumlah[]" value="1" min="1" max="5" class="form-control form-control-sm"></td>
                             </tr>
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="alat_id[]" value="3" class="form-check-input"></td>
                                 <td>Mini PC Intel NUC 11</td>
                                 <td>Perangkat Pemrosesan</td>
                                 <td>8</td>
-                                <td><input type="number" name="jumlah[3]" value="1" min="1" max="8" class="form-control form-control-sm"></td>
+                                <td><input type="number" name="jumlah[]" value="1" min="1" max="8" class="form-control form-control-sm"></td>
                             </tr>
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="alat_id[]" value="4" class="form-check-input"></td>
                                 <td>Tang Crimping RJ45/RJ11 Proskit</td>
                                 <td>Perkakas Elektronik</td>
                                 <td>20</td>
-                                <td><input type="number" name="jumlah[4]" value="1" min="1" max="20" class="form-control form-control-sm"></td>
+                                <td><input type="number" name="jumlah[]" value="1" min="1" max="20" class="form-control form-control-sm"></td>
                             </tr>
                             <tr>
                                 <td class="text-center"><input type="checkbox" name="alat_id[]" value="5" class="form-check-input"></td>
                                 <td>Adapter HDMI to VGA dengan Audio</td>
                                 <td>Suku Cadang & Aksesoris</td>
                                 <td>25</td>
-                                <td><input type="number" name="jumlah[5]" value="1" min="1" max="25" class="form-control form-control-sm"></td>
+                                <td><input type="number" name="jumlah[]" value="1" min="1" max="25" class="form-control form-control-sm"></td>
                             </tr>
                         </tbody>
                     </table>

@@ -303,7 +303,7 @@ class AdminController extends Controller
     {
         $search = $request->input('search');
 
-        $peminjaman = Peminjaman::with(['user', 'detailPinjam.alat'])
+        $peminjaman = Peminjaman::with(['user', 'detailPinjams.alat'])
             ->when($search, function ($query, $search) {
                 return $query->where('status', 'like', "%{$search}%")
                     ->orWhereHas('user', function ($q) use ($search) {
@@ -378,7 +378,7 @@ class AdminController extends Controller
     // 4. Memperbarui status peminjaman (Misal: dari diajukan -> dipinjam / selesai)
     public function updateStatusPeminjaman(Request $request, $id)
     {
-        $peminjaman = Peminjaman::with('detailPinjam.alat')->findOrFail($id);
+        $peminjaman = Peminjaman::with('detailPinjams.alat')->findOrFail($id);
 
         $request->validate([
             'status' => 'required|in:diajukan,dipinjam,selesai,telat',
@@ -392,7 +392,7 @@ class AdminController extends Controller
             // Logika pengelolaan stok otomatis
             if ($statusLama != 'dipinjam' && $statusBaru == 'dipinjam') {
                 // Kurangi stok karena barang resmi dipinjam
-                foreach ($peminjaman->detailPinjam as $detail) {
+                foreach ($peminjaman->detailPinjams as $detail) {
                     $alat = $detail->alat;
                     if ($alat->stok < $detail->jumlah) {
                         throw new \Exception("Stok alat {$alat->nama_alat} tidak mencukupi untuk dipinjam.");
@@ -401,7 +401,7 @@ class AdminController extends Controller
                 }
             } elseif ($statusLama == 'dipinjam' && ($statusBaru == 'selesai')) {
                 // Kembalikan stok karena barang sudah dikembalikan (selesai)
-                foreach ($peminjaman->detailPinjam as $detail) {
+                foreach ($peminjaman->detailPinjams as $detail) {
                     $detail->alat->increment('stok', $detail->jumlah);
                 }
             }
@@ -439,7 +439,7 @@ class AdminController extends Controller
         $search = $request->input('search');
 
         // Mengambil transaksi pengembalian beserta relasi peminjaman & user
-        $pengembalians = Pengembalian::with(['peminjaman.user', 'peminjaman.detailPinjam.alat', 'petugas'])
+        $pengembalians = Pengembalian::with(['peminjaman.user', 'peminjaman.detailPinjams.alat', 'petugas'])
             ->when($search, function ($query, $search) {
                 return $query->where('kondisi_kembali', 'like', "%{$search}%")
                     ->orWhereHas('peminjaman.user', function ($q) use ($search) {
@@ -457,7 +457,7 @@ class AdminController extends Controller
     public function createPengembalian()
     {
         // Hanya ambil transaksi yang statusnya 'dipinjam' atau 'telat'
-        $peminjamans = Peminjaman::with(['user', 'detailPinjam.alat'])
+        $peminjamans = Peminjaman::with(['user', 'detailPinjams.alat'])
             ->where('status', '!=', 'selesai')
             ->get();
 
@@ -477,7 +477,7 @@ class AdminController extends Controller
 
         DB::beginTransaction();
         try {
-            $peminjaman = Peminjaman::with('detailPinjam')->findOrFail($request->peminjaman_id);
+            $peminjaman = Peminjaman::with('detailPinjams')->findOrFail($request->peminjaman_id);
         
             $totalDenda = 0;
 
@@ -509,8 +509,8 @@ class AdminController extends Controller
             $peminjaman->update(['status' => 'dikembalikan']);
 
             // 3. Pulihkan (tambahkan kembali) stok alat ke inventaris
-            $details = $peminjaman->detailPinjam ?? $peminjaman->detailPeminjaman ?? [];
-            foreach ($peminjaman->detailPinjam as $detail) {
+            $details = $peminjaman->detailPinjams ?? $peminjaman->detailPeminjaman ?? [];
+            foreach ($peminjaman->detailPinjams as $detail) {
                 $alat = Alat::findOrFail($detail->alat_id);
                 $alat->increment('stok', $detail->jumlah);
             }   
