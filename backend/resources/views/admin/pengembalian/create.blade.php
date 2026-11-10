@@ -22,10 +22,10 @@
                 <label class="block text-gray-700 text-sm font-semibold mb-2">Pilih Transaksi Peminjaman</label>
                 <select name="peminjaman_id" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                     <option value="">-- Pilih Transaksi Peminjaman --</option>
-                    @foreach($peminjamans as $pinjam)
+                    @foreach($peminjamans ?? [] as $pinjam)
                         <option value="{{ $pinjam->id }}">
                             {{ $pinjam->user->name ?? 'User' }} - 
-                            [Alat: @foreach($pinjam->detailPinjam as $d) {{ $d->alat->nama_alat ?? '' }} ({{ $d->jumlah }}pcs) @endforeach]
+                            [Alat: @foreach($pinjam->detailPinjams ?? [] as $d) {{ $d->alat->nama_alat ?? '' }} ({{ $d->jumlah }}pcs) @endforeach]
                         </option>
                     @endforeach
                 </select>

@@ -506,7 +506,7 @@ class AdminController extends Controller
             ]);
 
             // 2. Update status peminjaman menjadi 'dikembalikan'
-            $peminjaman->update(['status' => 'dikembalikan']);
+            $peminjaman->update(['status' => 'selesai']);
 
             // 3. Pulihkan (tambahkan kembali) stok alat ke inventaris
             $details = $peminjaman->detailPinjams ?? $peminjaman->detailPeminjaman ?? [];
