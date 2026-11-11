@@ -8,6 +8,35 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    // Menampilkan Form Register
+    public function showRegisterForm()
+    {
+        return view('auth.register'); // Sesuaikan jika foldernya berbeda
+    }
+
+    // Memproses Register
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'no_hp' => ['required', 'string', 'max:15'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'no_hp' => $request->no_hp,
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'role' => 'peminjam', // Sesuaikan role default jika ada
+        ]);
+
+        \Illuminate\Support\Facades\Auth::login($user);
+
+        return redirect()->route('peminjam.katalog');
+    }
+
     // Menampilkan Form Login
     public function showLoginForm()
     {

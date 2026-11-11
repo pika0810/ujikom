@@ -7,8 +7,12 @@ use App\Http\Controllers\WEB\PetugasController;
 use App\Http\Controllers\WEB\PeminjamController;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('register');
 });
+
+// Route untuk Register
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
 //admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
